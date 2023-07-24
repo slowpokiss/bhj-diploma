@@ -4,38 +4,38 @@
  * Имеет свойство URL, равное '/user'.
  * */
 class User {
-  /**
-   * Устанавливает текущего пользователя в
-   * локальном хранилище.
-   * */
+  static URL = '/user'
+
   static setCurrent(user) {
-
+    localStorage.setItem('user', user);
   }
 
-  /**
-   * Удаляет информацию об авторизованном
-   * пользователе из локального хранилища.
-   * */
   static unsetCurrent() {
-
+    localStorage.removeItem('user');
   }
 
-  /**
-   * Возвращает текущего авторизованного пользователя
-   * из локального хранилища
-   * */
   static current() {
-
+    if (localStorage.getItem('user')) {
+      return localStorage.getItem('user');
+    } else {
+      return undefined;
+    }
   }
 
-  /**
-   * Получает информацию о текущем
-   * авторизованном пользователе.
-   * */
   static fetch(callback) {
 
-  }
+    createRequest({
+    method: 'GET',
+    url: this.URL + '/current',
 
+    callback: ( err, response ) => {
+      if ( response && response.user ) {
+        User.setCurrent( response.user );
+      }
+      callback( err, response );
+      }
+    })
+  }
   /**
    * Производит попытку авторизации.
    * После успешной авторизации необходимо
@@ -46,11 +46,10 @@ class User {
     createRequest({
       url: this.URL + '/login',
       method: 'POST',
-      responseType: 'json',
       data,
       callback: (err, response) => {
         if (response && response.user) {
-          this.setCurrent(response.user);
+          User.setCurrent(response.user);
         }
         callback(err, response);
       }
@@ -64,7 +63,17 @@ class User {
    * User.setCurrent.
    * */
   static register(data, callback) {
-
+    createRequest({
+      url: this.URL + '/register',
+      method: 'POST',
+      data,
+      callback: (err, response) => {
+        if (response && response.user) {
+          this.setCurrent(response.user);
+        }
+        callback(err, response);
+      }
+    });
   }
 
   /**
@@ -72,6 +81,6 @@ class User {
    * выхода необходимо вызвать метод User.unsetCurrent
    * */
   static logout(callback) {
-
-  }
+    createRequest({url: this.URL + '/logout', data, method: 'POST', callback: callback})
+  } 
 }
