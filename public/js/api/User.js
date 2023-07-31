@@ -4,7 +4,7 @@
  * Имеет свойство URL, равное '/user'.
  * */
 class User {
-  static URL = '/user'
+  static URL = '/user';
 
   static setCurrent(user) {
     localStorage.setItem('user', user);
@@ -15,22 +15,18 @@ class User {
   }
 
   static current() {
-    if (localStorage.getItem('user')) {
-      return localStorage.getItem('user');
-    } else {
-      return undefined;
-    }
+    return JSON.parse(localStorage.getItem('user'));
   }
 
   static fetch(callback) {
-
     createRequest({
     method: 'GET',
     url: this.URL + '/current',
-
-    callback: ( err, response ) => {
+    callback( err, response ) {
       if ( response && response.user ) {
         User.setCurrent( response.user );
+      } else {
+        User.unsetCurrent()
       }
       callback( err, response );
       }
@@ -55,7 +51,6 @@ class User {
       }
     });
   }
-
   /**
    * Производит попытку регистрации пользователя.
    * После успешной авторизации необходимо
@@ -75,7 +70,6 @@ class User {
       }
     });
   }
-
   /**
    * Производит выход из приложения. После успешного
    * выхода необходимо вызвать метод User.unsetCurrent
