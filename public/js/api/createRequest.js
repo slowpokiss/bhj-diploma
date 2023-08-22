@@ -7,7 +7,7 @@ const createRequest = (options = {}) => {
   if (method === 'GET') {
     for (key in data) {
       data[key].includes('@') ? url += `?mail=${data[key]}` : url += `&password=${data[key]}`;
-    } 
+    }
   } else {
     for (key in data) {
       if (data[key].includes('@')) {
@@ -25,6 +25,5 @@ const createRequest = (options = {}) => {
   }
   catch (err) {
     callback(err);
-  }
-
+  } 
 };
