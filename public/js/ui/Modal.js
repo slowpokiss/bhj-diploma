@@ -2,7 +2,6 @@ class Modal {
   constructor(element){
     if (element) {
       this.element = element
-      //console.log(this.element)
       this.registerEvents();
     } else {
       console.log(new Error('в конструктор передан пустой элемент'));
@@ -11,7 +10,6 @@ class Modal {
 
   registerEvents() {
     const onCloseEls = this.element.querySelectorAll('[data-dismiss="modal"]')
-    //console.log(onCloseEls)
     onCloseEls.forEach((el) => {
       el.onclick = (ev) => {
         ev.preventDefault();
