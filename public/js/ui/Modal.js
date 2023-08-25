@@ -1,11 +1,8 @@
 class Modal {
   constructor(element){
-    if (element) {
-      this.element = element
-      this.registerEvents();
-    } else {
-      console.log(new Error('в конструктор передан пустой элемент'));
-    }
+    if (!element) { throw new Error('в конструктор передан пустой элемент')} 
+    this.element = element
+    this.registerEvents();
   }
 
   registerEvents() {
