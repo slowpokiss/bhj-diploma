@@ -47,7 +47,7 @@ class Sidebar {
 
     document.querySelector('.menu-item_logout').addEventListener('click', (e) => {
       e.preventDefault();
-      User.logout( () => {App.setState('init')} );
+      User.logout( (err, response) => {App.setState('init')} );
     })
   }
 }
