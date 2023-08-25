@@ -75,6 +75,11 @@ class User {
    * выхода необходимо вызвать метод User.unsetCurrent
    * */
   static logout(callback) {
-    createRequest({url: this.URL + '/logout', data, method: 'POST', callback: callback})
-  } 
+    createRequest({url: this.URL + '/logout', data, method: 'POST', callback: (err, response) => {
+      if (response && response.user) {
+        this.unsetCurrent(response.user);
+      }
+      callback(err, response);
+    }})
+  }
 }
