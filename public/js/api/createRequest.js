@@ -20,7 +20,9 @@ const createRequest = (options = {}) => {
   try {
     xhr.open(method, url);
     xhr.send(formData);
-    xhr.onload = () => {callback(null, xhr.response)}; 
+    xhr.onload = () => {
+      callback(null, xhr.response)
+    }; 
   } 
 
   catch (err) {

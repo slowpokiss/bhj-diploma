@@ -1,7 +1,3 @@
-/**
- * Класс RegisterForm управляет формой
- * регистрации
- * */
 class RegisterForm extends AsyncForm {
   /**
    * Производит регистрацию с помощью User.register
@@ -10,6 +6,10 @@ class RegisterForm extends AsyncForm {
    * и закрывает окно, в котором находится форма
    * */
   onSubmit(data) {
-
+    User.register(data, () => { 
+      App.setState('user-logged');
+      const register = new Modal(document.getElementById('modal-register'));
+      register.close();
+    })
   }
 }

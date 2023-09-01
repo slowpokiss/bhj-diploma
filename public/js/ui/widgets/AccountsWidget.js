@@ -13,8 +13,13 @@ class AccountsWidget {
    * Если переданный элемент не существует,
    * необходимо выкинуть ошибку.
    * */
-  constructor( element ) {
-
+  constructor(element) {
+    if (!element) { 
+      throw new Error('в конструктор передан пустой элемент') 
+    };
+    this.element = element;
+    this.registerEvents();
+    this.update();
   }
 
   /**
@@ -25,7 +30,15 @@ class AccountsWidget {
    * вызывает AccountsWidget.onSelectAccount()
    * */
   registerEvents() {
+    document.querySelector('.create-account').addEventListener('click', () => {
+      App.getModal('createAccount').open()
+    })
 
+    document.querySelectorAll('.account').forEach(el => {
+      el.addEventListener('click', () => {
+        AccountsWidget.onSelectAccount(el)
+      })
+    });
   }
 
   /**
@@ -39,7 +52,9 @@ class AccountsWidget {
    * метода renderItem()
    * */
   update() {
-
+    if (User.current()) {
+      Account.list()
+    }
   }
 
   /**
@@ -48,7 +63,9 @@ class AccountsWidget {
    * в боковой колонке
    * */
   clear() {
-
+    document.querySelectorAll('.account').forEach(el => {
+      el.parentElement.removeChild(el);
+    })
   }
 
   /**
@@ -59,7 +76,15 @@ class AccountsWidget {
    * Вызывает App.showPage( 'transactions', { account_id: id_счёта });
    * */
   onSelectAccount( element ) {
-
+    
+    element.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      const active = element.querySelector('.active');
+      el.classList.add('active');
+      active.classList.remove('active');
+    })
+    
+    App.showPage( 'transactions', { account_id: element.getAttribute('data-id') });
   }
 
   /**
@@ -68,7 +93,11 @@ class AccountsWidget {
    * item - объект с данными о счёте
    * */
   getAccountHTML(item){
-
+    const a = document.createElement('li');
+    a.classList.add('active', 'account');
+    a.setAttribute('data-id', '35');
+    a.insertAdjacentHTML('afterbegin', `<a href="#"><span>${item.name}</span> <span>${item.sum} ₽</span></a>`);
+    return a;
   }
 
   /**

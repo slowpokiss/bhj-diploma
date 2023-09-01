@@ -11,8 +11,12 @@ class TransactionsWidget {
    * Если переданный элемент не существует,
    * необходимо выкинуть ошибку.
    * */
-  constructor( element ) {
-
+  constructor(element) {
+    if (!element) { 
+      throw new Error('в конструктор передан пустой элемент');
+    };
+    this.element = element;
+    this.registerEvents();
   }
   /**
    * Регистрирует обработчики нажатия на
@@ -21,6 +25,14 @@ class TransactionsWidget {
    * экземпляра окна
    * */
   registerEvents() {
+    document.querySelector('.btn-success').onclick = (ev) => {
+      ev.preventDefault();
+      App.getModal('newIncome').open();
+    }
 
+    document.querySelector('.btn-danger').onclick = (ev) => {
+      ev.preventDefault();
+      App.getModal('newExpense').open();
+    }
   }
 }
