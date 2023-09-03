@@ -17,15 +17,14 @@ const createRequest = (options = {}) => {
     }
   }
 
+  xhr.onload = () => {
+    callback(null, xhr.response)
+  }; 
+
   try {
     xhr.open(method, url);
     xhr.send(formData);
-    xhr.onload = () => {
-      callback(null, xhr.response)
-    }; 
-  } 
-
-  catch (err) {
+  } catch (err) {
     callback(err);
   } 
 };

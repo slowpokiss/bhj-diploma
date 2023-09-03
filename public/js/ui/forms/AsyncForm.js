@@ -1,5 +1,4 @@
 class AsyncForm {
-  
   constructor(element) {
     if (!element) { 
       throw new Error('в конструктор передан пустой элемент') 

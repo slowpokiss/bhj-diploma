@@ -17,12 +17,10 @@ class Modal {
     })
   }
 
-  onClose(e) {
-    e.onclick = (ev) =>{
-      ev.preventDefault();
-      this.close();
-    }
+  onClose() {
+    this.close();
   }
+
   open() {
     this.element.style.setProperty('display', 'block')
   }

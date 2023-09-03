@@ -8,8 +8,7 @@ class LoginForm extends AsyncForm {
   onSubmit(data) {
     User.login(data, () => { 
       App.setState('user-logged');
-      const login = new Modal(document.getElementById('modal-login'));
-      login.close();
+      App.getModal('login').close();
     })
   }
 }

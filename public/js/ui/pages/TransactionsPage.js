@@ -22,7 +22,7 @@ class TransactionsPage {
    * Вызывает метод render для отрисовки страницы
    * */
   update() {
-    options ? this.render(options) : this.render();
+    this.render(this.lastOptions);
   }
 
   /**
@@ -39,12 +39,12 @@ class TransactionsPage {
       }
     });
     
-    document.querySelectorAll('.transaction__remove').forEach(el => {
-      el.onlick = (ev) => {
-        ev.preventDefault();
-        this.removeTransaction(el.getAttribute('data-id'));
+    document.querySelector('.content').onclick = (e) => {
+      e.preventDefault()
+      if (e.target === document.querySelector('.transaction__remove')) {
+        this.removeTransaction(e.target.getAttribute('data-id'));
       }
-    });
+    }
   }
 
   /**
@@ -89,11 +89,14 @@ class TransactionsPage {
     this.lastOptions = options;
     if (options) {
       Account.get(this.lastOptions.account_id, () => {
-        this.renderTitle(lastOptions.account_id)
+        this.renderTitle(this.lastOptions.account_id)
       })
 
-      Transaction.list(options, () => {
-        TransactionsPage.renderTransactions()
+      Transaction.list(options, (err, response) => {
+        if (!err) {
+          this.clear();
+          this.renderTransactions(response);
+        }
       })
     }
   }
@@ -149,7 +152,7 @@ class TransactionsPage {
   renderTransactions(data){
     const content = document.querySelector('.content');
     data.forEach(el => {
-      content.appendChild(format(el));
+      content.appendChild(this.getTransactionHTML(el));
     });
   }
 }
