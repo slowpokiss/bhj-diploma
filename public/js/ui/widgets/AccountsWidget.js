@@ -27,7 +27,7 @@ class AccountsWidget {
   registerEvents() {
     document.querySelector('.create-account').addEventListener('click', () => {
       App.getModal('createAccount').open()
-    })
+    })  
 
     document.querySelectorAll('.accounts-panel').onclick = (e) => {
       e.preventDefault()
@@ -50,9 +50,9 @@ class AccountsWidget {
   update() {
     if (User.current()) {
       Account.list(null, (err, response) => {
-        if (!err) {
+        if (err === null) {
           this.clear();
-          response.forEach(el => {
+          response.data.forEach(el => {
             this.renderItem(el)
           })
         }

@@ -135,14 +135,7 @@ class TransactionsPage {
    * item - объект с информацией о транзакции
    * */
   getTransactionHTML(item){
-    let wrapper = document.createElement('div');
-    wrapper.classList.add('transaction', 'transaction_' + item.type, 'row');
-    wrapper.insertAdjacentHTML('afterbegin', '<div class="col-md-7 transaction__details"><div class="transaction__icon"><span class="fa fa-money fa-2x"></span></div><div class="transaction__info"><h4 class="transaction__title"></h4><div class="transaction__date"></div></div></div><div class="col-md-3"><div class="transaction__summ"><span class="currency">₽</span></div></div><div class="col-md-2 transaction__controls"><button class="btn btn-danger transaction__remove"><i class="fa fa-trash"></i></button></div>') 
-    wrapper.querySelector('.transaction__title').textContent = item.name;
-    wrapper.querySelector('.transaction__date').textContent = this.formatDate(item.created_at);
-    wrapper.querySelector('.transaction__summ').textContent = item.sum;
-    wrapper.querySelector('.transaction__remove').setAttribute('data-id', item.user_id)    
-    return wrapper;
+    return `<div class="transaction ${item.type} row"><div class="col-md-7 transaction__details"><div class="transaction__icon"><span class="fa fa-money fa-2x"></span></div><div class="transaction__info"><h4 class="transaction__title">${item.name}</h4><div class="transaction__date">${this.formatDate(item.created_at)}</div></div></div><div class="col-md-3"><div class="transaction__summ">${item.sum} <span class="currency">₽</span></div></div><div class="col-md-2 transaction__controls"><button class="btn btn-danger transaction__remove" data-id=${item.user_id}><i class="fa fa-trash"></i>  </button></div></div>`;
   }
 
   /**
@@ -150,9 +143,6 @@ class TransactionsPage {
    * используя getTransactionHTML
    * */
   renderTransactions(data){
-    const content = document.querySelector('.content');
-    data.forEach(el => {
-      content.appendChild(this.getTransactionHTML(el));
-    });
+    document.querySelector('.content').insertAdjacentHTML('afterbegin', data.reduce((acc, el) => acc + getTransactionHTML(el), ''))
   }
 }
